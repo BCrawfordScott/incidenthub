@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: incidenthub-postgres
+    environment:
+      POSTGRES_USER: incidenthub
+      POSTGRES_PASSWORD: incidenthub
+      POSTGRES_DB: incidenthub_development
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U incidenthub -d incidenthub_development"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7
+    container_name: incidenthub-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:
+  redisdata:

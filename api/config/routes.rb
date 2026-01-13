@@ -9,8 +9,14 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  
+
   if Rails.env.development?
     mount Sidekiq::Web => "/sidekiq"
+  end
+
+  scope path: "api", module: :api do
+    namespace :v1 do
+      get "/health", to: "health#show"
+    end
   end
 end

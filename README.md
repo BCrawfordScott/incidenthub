@@ -145,6 +145,13 @@ Services:
 - Sidekiq UI (dev only): <http://localhost:3001/sidekiq>
 - Web (Next.js): <http://localhost:3000>
 
+## Infra Health
+Infrastructure health check lives at:
+```
+/health
+```
+
+
 ## API Versioning
 
 All API routes are namespaced:

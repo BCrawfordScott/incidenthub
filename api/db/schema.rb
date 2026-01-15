@@ -10,8 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 0) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_13_210114) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "citext"
   enable_extension "plpgsql"
 
+  create_table "users", force: :cascade do |t|
+    t.citext "email", null: false
+    t.string "password_digest", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.check_constraint "status = ANY (ARRAY[0, 1])", name: "users_status_check"
+  end
 end

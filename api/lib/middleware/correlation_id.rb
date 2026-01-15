@@ -24,7 +24,7 @@ module Middleware
       status, headers, body = @app.call(env)
 
       headers[RESPONSE_HEADER] ||= correlation_id
-      [status, headers, body]
+      [ status, headers, body ]
     ensure
       Current.reset
     end

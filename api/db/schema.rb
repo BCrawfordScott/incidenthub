@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_13_210114) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_16_200214) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
+
+  create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "status", default: 0, null: false
+    t.string "billing_email"
+    t.jsonb "billing_metadata", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_organizations_on_name"
+    t.check_constraint "status = ANY (ARRAY[0, 1])", name: "organizations_status_check"
+  end
 
   create_table "users", force: :cascade do |t|
     t.citext "email", null: false

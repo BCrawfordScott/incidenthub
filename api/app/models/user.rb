@@ -14,6 +14,9 @@ class User < ApplicationRecord
 
   scope :active_users, -> { where(deleted_at: nil, status: :active) }
 
+  has_many :memberships, dependent: :destroy
+  has_many :organizations, through: :memberships
+
   def soft_delete!
     update!(deleted_at: Time.current, status: :disabled)
   end
